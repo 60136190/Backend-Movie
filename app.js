@@ -91,11 +91,6 @@ app.use("/api", upload);
 //Statistics
 app.use("/api/statistics/", statistics);
 
-app.use(express.static(path.join(__dirname, "../frontend/build")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
-});
 
 //!Middleware for error
 module.exports = app;
