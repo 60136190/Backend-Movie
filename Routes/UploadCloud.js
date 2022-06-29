@@ -29,7 +29,7 @@ router.post('/uploadImageUser', auth, (req, res) => {
     }
     cloudinary.v2.uploader.upload(
       file.tempFilePath,
-      { folder: 'user' },
+      { folder: 'Movie/user' },
       async (err, result) => {
         if (err) throw err;
 
@@ -69,7 +69,7 @@ router.post('/uploadVideoFilm', auth, authAdmin, (req, res) => {
     const file = req.files.file;
     cloudinary.v2.uploader.upload_large(
       file.tempFilePath,
-      { folder: 'film/video', resource_type: 'video', chunk_size: 6000000 },
+      { folder: 'Movie/film/video', resource_type: 'video', chunk_size: 6000000 },
       async (err, result) => {
         if (err) throw err;
 
@@ -96,7 +96,8 @@ router.post('/destroyVideoFilm', auth, authAdmin, (req, res) => {
       async (err, result) => {
         if (err) throw err;
 
-        res.json({ msg: 'Deleted Video Film' });
+        res.json({ status: 200,
+          success: true, msg: 'Deleted Video Film' });
       }
     );
   } catch (err) {
@@ -123,7 +124,7 @@ router.post('/uploadImageDirector', auth, authAdmin, (req, res) => {
     }
     cloudinary.v2.uploader.upload(
       file.tempFilePath,
-      { folder: 'director' },
+      { folder: 'Movie/director' },
       async (err, result) => {
         if (err) throw err;
 
@@ -172,7 +173,7 @@ router.post('/uploadImageFilm', auth, authAdmin, (req, res) => {
     }
     cloudinary.v2.uploader.upload(
       file.tempFilePath,
-      { folder: 'film/image' },
+      { folder: 'Movie/film/image' },
       async (err, result) => {
         if (err) throw err;
 
@@ -221,7 +222,7 @@ router.post('/uploadImagePayment', auth, authAdmin, (req, res) => {
     }
     cloudinary.v2.uploader.upload(
       file.tempFilePath,
-      { folder: 'payment' },
+      { folder: 'Movie/payment' },
       async (err, result) => {
         if (err) throw err;
 

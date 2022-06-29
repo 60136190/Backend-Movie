@@ -12,6 +12,9 @@ router.get("/verify/:userId/:uniqueString", userCtrl.verifyEmail);
 //đăng nhập tài khoản khách hàng
 router.post("/login", userCtrl.loginCustomer);
 
+// check password
+router.post("/checkPassword", auth, authCustomer, userCtrl.checkPassword);
+
 //refresh token
 router.get("/refresh_token", userCtrl.refreshToken);
 

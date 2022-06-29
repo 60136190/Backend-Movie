@@ -351,6 +351,35 @@ const userCtrl = {
     }
   },
 
+  //check password
+  checkPassword: async (req, res) => {
+    try {
+      const {password } = req.body;
+
+      const user = await Users.findById(req.user.id);
+    
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch)
+        return res.json({
+          status: 400,
+          success: false,
+          msg: "Incorrect password.",
+        });
+
+      res.json({
+        status: 200,
+        success: true,
+        msg: "Password is correct",
+      });
+    } catch (err) {
+      return res.json({
+        status: 400,
+        success: false,
+        msg: err.message,
+      });
+    }
+  },
+
   //đăng nhập tài khoản admin
   loginAdmin: async (req, res) => {
     try {
@@ -661,10 +690,10 @@ const userCtrl = {
 
     await user.save({ validateBeforeSave: false });
 
-    // const resetPasswordUrl = `${req.protocol}://${req.get(
-    //   "host"
-    // )}/customer/password/reset/${resetToken}`;
-    const resetPasswordUrl = `${process.env.FRONTEND_URL}/customer/password/reset/${resetToken}`;
+    const resetPasswordUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/customer/password/reset/${resetToken}`;
+    // const resetPasswordUrl = `${process.env.FRONTEND_URL}/customer/password/reset/${resetToken}`;
     const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
     try {
       await sendEmail({

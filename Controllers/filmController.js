@@ -159,6 +159,7 @@ const filmCtrl = {
   async getAdultFilmByEachCategory(req, res) {
     try {
       const listAdultFilms = await Films.find({});
+      
 
       var listCategories = [];
 
@@ -307,11 +308,11 @@ const filmCtrl = {
     try {
       const {
         title,
-        image_title,
         description,
         year_production,
         country_production,
         image_film,
+        image_title,
         video_film,
         director,
         category,
@@ -323,11 +324,12 @@ const filmCtrl = {
 
       const newFilm = new Films({
         title,
-        image_title,
+       
         description,
         year_production,
         country_production,
         image_film,
+        image_title,
         video_film,
         director,
         category,
@@ -386,8 +388,8 @@ const filmCtrl = {
         });
       }
     } catch (err) {
-      return res.status(200).json({
-        status: 200,
+      return res.status(400).json({
+        status: 400,
         success: true,
         msg: `Failed to add episode`,
       });
