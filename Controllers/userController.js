@@ -40,7 +40,7 @@ const userCtrl = {
       let reg = new RegExp(
         "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"
       ).test(password);
-      
+
       if (!reg) {
         return res.json({
           status: 400,
@@ -167,6 +167,79 @@ const userCtrl = {
         status: 400,
         success: false,
         msg: error.message,
+      });
+    }
+  },
+
+  // forget password testing
+  forgetTest: async (req, res) => {
+    try {
+      const { email } =req.body;
+      const user = await Users.findOne({ email });
+
+      const uniqueString = uuidv4() + user.id;
+
+      //hash unique string
+      const hashedUniqueString = await bcrypt.hash(uniqueString, 10);
+
+      const newVerification = new UserVerifications({
+        userId: user.id,
+        uniqueString: hashedUniqueString,
+        createdAt: Date.now(),
+        expiresAt: Date.now() + 3600000,
+      });
+
+      await newVerification.save();
+      //mật khẩu random 8 kí tự
+      var randPassword = Array(8)
+        .fill(
+          '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@!#$%^&*()_+=<>?/|'
+        )
+        .map(function (x) {
+          return x[Math.floor(Math.random() * x.length)];
+        })
+        .join('');
+
+      const salt = bcrypt.genSaltSync();
+      const hashPassword = bcrypt.hashSync(randPassword, salt);
+    
+       await user.update(
+        {
+          password:hashPassword
+        }
+      );
+  
+
+      const confirmEmailUrl = randPassword;
+
+      //send email verification
+      await sendEmail({
+        emailFrom: process.env.SMPT_MAIL,
+        emailTo: email,
+        subject: `Verify Your Email`,
+        template: "forget-password",
+        attachments: [
+          {
+            filename: "netflix.png",
+            path: path.resolve("views", "images", "netflix.png"),
+            cid: "netflix_logo",
+          },
+        ],
+        context: {
+          confirmEmailUrl,
+        },
+      });
+
+      return res.json({
+        status: 200,
+        success: true,
+        msg: "Verification email sent to your email",
+      });
+    } catch (err) {
+      return res.json({
+        status: 400,
+        success: false,
+        msg: "b",
       });
     }
   },
@@ -354,10 +427,10 @@ const userCtrl = {
   //check password
   checkPassword: async (req, res) => {
     try {
-      const {password } = req.body;
+      const { password } = req.body;
 
       const user = await Users.findById(req.user.id);
-    
+
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch)
         return res.json({

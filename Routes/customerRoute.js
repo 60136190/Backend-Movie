@@ -9,6 +9,9 @@ router.post("/register", userCtrl.registerCustomer);
 //xác thực email đăng ký của khách hàng
 router.get("/verify/:userId/:uniqueString", userCtrl.verifyEmail);
 
+//forget password
+router.post("/forgetPass",userCtrl.forgetTest);
+
 //đăng nhập tài khoản khách hàng
 router.post("/login", userCtrl.loginCustomer);
 
