@@ -469,8 +469,8 @@ const filmCtrl = {
             film.seriesFilm[i].episode = episode;
             film.seriesFilm[i].public_id_video = public_id_video;
             film.seriesFilm[i].url_video = url_video;
-            film.seriesFilm[i].public_id_video = public_id_image;
-            film.seriesFilm[i].url_video = url_image;
+            film.seriesFilm[i].public_id_image = public_id_image;
+            film.seriesFilm[i].url_image = url_image;
           }
         }
       }

@@ -387,7 +387,7 @@ const userCtrl = {
       if (user.verified === false) {
         return res.json({
           status: 400,
-          message: "Email hasn't been verified yet. Check your inbox",
+          msg: "Email hasn't been verified yet. Check your inbox",
         });
       }
 
@@ -471,7 +471,7 @@ const userCtrl = {
       if (user.verified === false) {
         return res.json({
           status: 400,
-          message: "Email hasn't been verified yet. Check your inbox",
+          msg: "Email hasn't been verified yet. Check your inbox",
         });
       }
 
